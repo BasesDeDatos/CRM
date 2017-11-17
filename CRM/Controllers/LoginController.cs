@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 
 namespace CRM.Controllers
 {
@@ -53,7 +54,14 @@ namespace CRM.Controllers
                     string username = userModel.username;
                     Session["username"] = username;
                     ViewBag.username = Session["username"];
-                    return RedirectToAction("Index", "Home");
+                    if (userModel.cliente == false)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }                    
                 }
                 else
                 {
@@ -86,12 +94,7 @@ namespace CRM.Controllers
 
         public void RegistrarUsuario(User pUser)
         {
-            if (InsertarUsuario.validarRegistro(pUser))
-            {
-               database.insertarRegistroEnBD(pUser);
-            
-            }
-
+            database.insertarRegistroEnBD(pUser);
         }
         public static Boolean contrasenaEsValida(String newPass)
         {
