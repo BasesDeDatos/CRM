@@ -34,7 +34,7 @@
           <Property Name="username" Type="varchar" MaxLength="50" />
           <Property Name="pass" Type="varchar" MaxLength="50" />
           <Property Name="email" Type="varchar" MaxLength="50" />
-          <Property Name="cliente" Type="bit" />
+          <Property Name="cliente" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Vendedores">
           <Key>
@@ -193,7 +193,7 @@
           <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="pass" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="cliente" Type="Boolean" />
+          <Property Name="cliente" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Vendedore">
           <Key>

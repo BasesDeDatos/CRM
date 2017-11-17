@@ -212,6 +212,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MisPropuestasController.cs" />
+    <Compile Include="Controllers\PortalController.cs" />
     <Compile Include="Controllers\SeguimientoVentasController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -283,7 +284,7 @@
       <DependentUpon>VentasModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs">
-      <DependentUpon>VentasModel.tt</DependentUpon>
+      <DependentUpon>LoginDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Vendedore.cs">
       <DependentUpon>VentasModel.tt</DependentUpon>
@@ -440,6 +441,7 @@
     <Content Include="Views\SeguimientoVentas\Index.cshtml" />
     <Content Include="Views\SeguimientoVentas\FormNewSale.cshtml" />
     <Content Include="Views\MisPropuestas\Index.cshtml" />
+    <Content Include="Views\Portal\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

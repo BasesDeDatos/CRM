@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Mail;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
@@ -52,16 +53,21 @@ namespace CRM.Controllers
             else {
                 if (usuarioEsValido(userModel)) {
                     string username = userModel.username;
+                    bool userType = userModel.cliente;
                     Session["username"] = username;
+                    Session["userType"] = userType;
                     ViewBag.username = Session["username"];
-                    if (userModel.cliente == false)
+                    ViewBag.userType = Session["userType"];
+                    if (userType)
                     {
-                        return RedirectToAction("Index", "Home");
+                        System.Diagnostics.Debug.WriteLine(userType);
+                        return RedirectToAction("Index", "Portal");
                     }
                     else
                     {
+                        System.Diagnostics.Debug.WriteLine(userType);
                         return RedirectToAction("Index", "Home");
-                    }                    
+                    }
                 }
                 else
                 {

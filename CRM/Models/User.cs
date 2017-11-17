@@ -20,6 +20,6 @@ namespace CRM.Models
         public string username { get; set; }
         public string pass { get; set; }
         public string email { get; set; }
-        public Nullable<bool> cliente { get; set; }
+        public bool cliente { get; set; }
     }
 }
