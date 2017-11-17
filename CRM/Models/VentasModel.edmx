@@ -34,6 +34,7 @@
           <Property Name="username" Type="varchar" MaxLength="50" />
           <Property Name="pass" Type="varchar" MaxLength="50" />
           <Property Name="email" Type="varchar" MaxLength="50" />
+          <Property Name="cliente" Type="bit" />
         </EntityType>
         <EntityType Name="Vendedores">
           <Key>
@@ -102,6 +103,9 @@
           </ReferentialConstraint>
         </Association>
         <Function Name="getPropuestas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="getTotalVenta" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
+          <Parameter Name="p_idVenta" Type="int" Mode="In" />
+        </Function>
         <Function Name="getVentas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="CRMModel2StoreContainer">
           <EntitySet Name="Clientes" EntityType="Self.Clientes" Schema="dbo" store:Type="Tables" />
@@ -189,6 +193,7 @@
           <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="pass" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cliente" Type="Boolean" />
         </EntityType>
         <EntityType Name="Vendedore">
           <Key>
@@ -331,6 +336,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="CRMModel2.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="cliente" ColumnName="cliente" />
                 <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="pass" ColumnName="pass" />
                 <ScalarProperty Name="username" ColumnName="username" />

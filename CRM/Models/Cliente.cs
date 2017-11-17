@@ -15,7 +15,6 @@ namespace CRM.Models
     public partial class Cliente
     {
         public string errorMsj;
-
         public int cliente_id { get; set; }
         public string nombre { get; set; }
         public string pais { get; set; }

@@ -16,7 +16,6 @@ namespace CRM.Models
     {
         public string errorMsj;
         public string productolista;
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Venta()
         {

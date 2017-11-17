@@ -39,7 +39,15 @@ namespace CRM.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getVentas_Result>("getVentas");
         }
     
-
+        public virtual ObjectResult<getPropuestas_Result> getPropuestas()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getPropuestas_Result>("getPropuestas");
+        }
+    
+        public virtual ObjectResult<getPropuestas1_Result> getPropuestas1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getPropuestas1_Result>("getPropuestas1");
+        }
     
         public virtual ObjectResult<getPropuestas2_Result> getPropuestas2()
         {
