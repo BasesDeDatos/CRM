@@ -212,6 +212,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MisPropuestasController.cs" />
+    <Compile Include="Controllers\ReporteErroresController.cs" />
     <Compile Include="Controllers\SeguimientoVentasController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -425,7 +426,9 @@
     <Content Include="Scripts\sb-admin-2.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="style.css" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -440,8 +443,10 @@
     <Content Include="Views\SeguimientoVentas\Index.cshtml" />
     <Content Include="Views\SeguimientoVentas\FormNewSale.cshtml" />
     <Content Include="Views\MisPropuestas\Index.cshtml" />
+    <Content Include="Views\ReporteErrores\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>

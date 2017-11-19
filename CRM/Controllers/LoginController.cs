@@ -53,7 +53,9 @@ namespace CRM.Controllers
                 if (usuarioEsValido(userModel)) {
                     string username = userModel.username;
                     Session["username"] = username;
-                    ViewBag.username = Session["username"];
+					Session["isAdmin"] = userModel.isAdmin;
+
+					ViewBag.username = Session["username"];
                     if (userModel.cliente == false)
                     {
                         return RedirectToAction("Index", "Home");

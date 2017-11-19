@@ -16,7 +16,9 @@ namespace CRM.Models
     {
         public string errorMessage;
         public string repeatPass;
-        public int ID { get; set; }
+		internal object isAdmin;
+
+		public int ID { get; set; }
         public string username { get; set; }
         public string pass { get; set; }
         public string email { get; set; }
