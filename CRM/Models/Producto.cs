@@ -18,6 +18,7 @@ namespace CRM.Models
         public Producto()
         {
             this.Ventas_x_Productos = new HashSet<Ventas_x_Productos>();
+            this.Reportes = new HashSet<Reporte>();
         }
     
         public int producto_id { get; set; }
@@ -28,5 +29,7 @@ namespace CRM.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Ventas_x_Productos> Ventas_x_Productos { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Reporte> Reportes { get; set; }
     }
 }

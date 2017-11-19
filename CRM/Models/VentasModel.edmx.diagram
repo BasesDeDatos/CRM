@@ -14,6 +14,8 @@
         <AssociationConnector Association="CRMModel2.fk_productos" />
         <AssociationConnector Association="CRMModel2.fk_vendedor_id" />
         <AssociationConnector Association="CRMModel2.fk_ventas" />
+        <EntityTypeShape EntityType="CRMModel2.Reporte" Width="1.5" PointX="5.25" PointY="8.375" />
+        <AssociationConnector Association="CRMModel2.FK_Reportes_Productos" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

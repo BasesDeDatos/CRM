@@ -93,30 +93,35 @@
                             <!-- /input-group -->
                         </li>
 
-                        @if ((bool)Session["isAdmin"])
+                        @if ((bool)Session["userType"])
                         {
                             @Html.Raw(@"
                             <li>
-                                <a href='../Home/Index'><i class='fa fa-dashboard fa-fw'></i>Reporte de Errores</a>
+                                <a href='../ReporteErrores'><i class='fa fa-dashboard fa-fw'></i>Reporte de Errores</a>
                             </li>
                             ")
-}
+                        }
 
-                        <li>
-                            <a href="~/Home/Index"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-                        </li>
-                        <li>
-                            <a href="~/Cliente/Index"><i class="fa fa-dashboard fa-fw"></i> Registro de Contacto</a>
-                        </li>
-                        <li>
-                            <a href="~/SeguimientoVentas/Index"><i class="fa fa-dashboard fa-fw"></i> Seguimiento de Ventas</a>
-                        </li>
-                        <li>
-                            <a href="~/SeguimientoVentas/FormNewSale"><i class="fa fa-dashboard fa-fw"></i> Nueva Venta</a>
-                        </li>
-                        <li>
-                            <a href="~/MisPropuestas/Index"><i class="fa fa-dashboard fa-fw"></i> Mis Propuestas</a>
-                        </li>
+                        else
+                        {
+                            @Html.Raw(@"
+                            <li>
+                                <a href='../Home/Index'><i class='fa fa-dashboard fa-fw'></i>Dashboard</a>
+                            </li>
+                            <li>
+                                <a href='../Cliente/Index'><i class='fa fa-dashboard fa-fw'></i> Registro de Contacto</a>
+                            </li>
+                            <li>
+                                <a href='../SeguimientoVentas/Index'><i class='fa fa-dashboard fa-fw'></i> Seguimiento de Ventas</a>
+                            </li>
+                            <li>
+                                <a href='../SeguimientoVentas/FormNewSale'><i class='fa fa-dashboard fa-fw'></i> Nueva Venta</a>
+                            </li>
+                            <li>
+                                <a href='../MisPropuestas/Index'><i class='fa fa-dashboard fa-fw'></i> Mis Propuestas</a>
+                            </li>
+                            ")
+                        }
 
                     </ul>
                 </div>

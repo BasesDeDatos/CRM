@@ -283,6 +283,9 @@
     <Compile Include="Models\Producto.cs">
       <DependentUpon>VentasModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Reporte.cs">
+      <DependentUpon>VentasModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\User.cs">
       <DependentUpon>VentasModel.tt</DependentUpon>
     </Compile>

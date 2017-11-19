@@ -26,6 +26,15 @@
           <Property Name="imagen" Type="varchar" MaxLength="500" />
           <Property Name="precio" Type="varchar" MaxLength="25" />
         </EntityType>
+        <EntityType Name="Reportes">
+          <Key>
+            <PropertyRef Name="reporte_id" />
+          </Key>
+          <Property Name="reporte_id" Type="int" Nullable="false" />
+          <Property Name="estado" Type="varchar" MaxLength="50" />
+          <Property Name="producto" Type="int" />
+          <Property Name="descripcion" Type="varchar(max)" />
+        </EntityType>
         <EntityType Name="Users">
           <Key>
             <PropertyRef Name="ID" />
@@ -78,6 +87,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Reportes_Productos">
+          <End Role="Productos" Type="Self.Productos" Multiplicity="0..1" />
+          <End Role="Reportes" Type="Self.Reportes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Productos">
+              <PropertyRef Name="producto_id" />
+            </Principal>
+            <Dependent Role="Reportes">
+              <PropertyRef Name="producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_vendedor_id">
           <End Role="Vendedores" Type="Self.Vendedores" Multiplicity="0..1" />
           <End Role="Ventas" Type="Self.Ventas" Multiplicity="*" />
@@ -110,6 +131,7 @@
         <EntityContainer Name="CRMModel2StoreContainer">
           <EntitySet Name="Clientes" EntityType="Self.Clientes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Productos" EntityType="Self.Productos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reportes" EntityType="Self.Reportes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Vendedores" EntityType="Self.Vendedores" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ventas" EntityType="Self.Ventas" Schema="dbo" store:Type="Tables" />
@@ -117,6 +139,10 @@
           <AssociationSet Name="fk_productos" Association="Self.fk_productos">
             <End Role="Productos" EntitySet="Productos" />
             <End Role="Ventas_x_Productos" EntitySet="Ventas_x_Productos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reportes_Productos" Association="Self.FK_Reportes_Productos">
+            <End Role="Productos" EntitySet="Productos" />
+            <End Role="Reportes" EntitySet="Reportes" />
           </AssociationSet>
           <AssociationSet Name="fk_vendedor_id" Association="Self.fk_vendedor_id">
             <End Role="Vendedores" EntitySet="Vendedores" />
@@ -154,6 +180,11 @@
           <FunctionImport Name="getPropuestas" ReturnType="Collection(CRMModel2.getPropuestas_Result)" />
           <FunctionImport Name="getPropuestas1" ReturnType="Collection(CRMModel2.getPropuestas1_Result)" />
           <FunctionImport Name="getPropuestas2" ReturnType="Collection(CRMModel2.getPropuestas2_Result)" />
+          <EntitySet Name="Reportes" EntityType="CRMModel2.Reporte" />
+          <AssociationSet Name="FK_Reportes_Productos" Association="CRMModel2.FK_Reportes_Productos">
+            <End Role="Producto" EntitySet="Productos" />
+            <End Role="Reporte" EntitySet="Reportes" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="getVentas_Result">
           <Property Type="DateTime" Name="fecha" Nullable="true" />
@@ -184,6 +215,7 @@
           <Property Name="imagen" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="precio" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Ventas_x_Productos" Relationship="CRMModel2.fk_productos" FromRole="Producto" ToRole="Ventas_x_Productos" />
+          <NavigationProperty Name="Reportes" Relationship="CRMModel2.FK_Reportes_Productos" FromRole="Producto" ToRole="Reporte" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -292,6 +324,19 @@
           <Property Type="String" Name="nombreCliente" Nullable="true" MaxLength="100" />
           <Property Type="Int32" Name="totalVenta" Nullable="true" />
         </ComplexType>
+        <EntityType Name="Reporte">
+          <Key>
+            <PropertyRef Name="reporte_id" />
+          </Key>
+          <Property Name="reporte_id" Type="Int32" Nullable="false" />
+          <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Producto" Relationship="CRMModel2.FK_Reportes_Productos" FromRole="Reporte" ToRole="Producto" />
+        </EntityType>
+        <Association Name="FK_Reportes_Productos">
+          <End Type="CRMModel2.Producto" Role="Producto" Multiplicity="0..1" />
+          <End Type="CRMModel2.Reporte" Role="Reporte" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -390,6 +435,24 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="Reportes">
+            <EntityTypeMapping TypeName="CRMModel2.Reporte">
+              <MappingFragment StoreEntitySet="Reportes">
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="reporte_id" ColumnName="reporte_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK_Reportes_Productos" TypeName="CRMModel2.FK_Reportes_Productos" StoreEntitySet="Reportes">
+            <EndProperty Name="Reporte">
+              <ScalarProperty Name="reporte_id" ColumnName="reporte_id" />
+            </EndProperty>
+            <EndProperty Name="Producto">
+              <ScalarProperty Name="producto_id" ColumnName="producto" />
+            </EndProperty>
+            <Condition ColumnName="producto" IsNull="false" />
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

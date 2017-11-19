@@ -53,21 +53,12 @@ namespace CRM.Controllers
             else {
                 if (usuarioEsValido(userModel)) {
                     string username = userModel.username;
-                    bool userType = userModel.cliente;
+                    bool userType = db.Users.Where(x => x.username == username).Select(x => new { x.cliente }).FirstOrDefault().cliente;
                     Session["username"] = username;
                     Session["userType"] = userType;
                     ViewBag.username = Session["username"];
                     ViewBag.userType = Session["userType"];
-                    if (userType)
-                    {
-                        System.Diagnostics.Debug.WriteLine(userType);
-                        return RedirectToAction("Index", "Portal");
-                    }
-                    else
-                    {
-                        System.Diagnostics.Debug.WriteLine(userType);
-                        return RedirectToAction("Index", "Home");
-                    }
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {

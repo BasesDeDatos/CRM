@@ -12,14 +12,12 @@ namespace CRM.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class Reporte
     {
-        public string errorMessage;
-        public string repeatPass;
-        public int ID { get; set; }
-        public string username { get; set; }
-        public string pass { get; set; }
-        public string email { get; set; }
-        public bool cliente { get; set; }
+        public int reporte_id { get; set; }
+        public string estado { get; set; }
+        public string descripcion { get; set; }
+    
+        public virtual Producto Producto { get; set; }
     }
 }
