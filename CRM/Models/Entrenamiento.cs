@@ -14,10 +14,18 @@ namespace CRM.Models
     
     public partial class Entrenamiento
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Entrenamiento()
+        {
+            this.Entrenamientos_x_Usuarios1 = new HashSet<Entrenamientos_x_Usuarios>();
+        }
+    
         public int id { get; set; }
         public string nombre { get; set; }
         public string descripcion { get; set; }
     
         public virtual Entrenamientos_x_Usuarios Entrenamientos_x_Usuarios { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Entrenamientos_x_Usuarios> Entrenamientos_x_Usuarios1 { get; set; }
     }
 }

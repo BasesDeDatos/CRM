@@ -10,17 +10,11 @@
 namespace CRM.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Entrenamientos_x_Usuarios
+    public partial class getEntrenamientos_Result
     {
-        public int id { get; set; }
-        public int usuario { get; set; }
-        public int entrenamiento { get; set; }
+        public string nombre { get; set; }
+        public string descripcion { get; set; }
         public string estado { get; set; }
-    
-        public virtual Entrenamiento Entrenamiento1 { get; set; }
-        public virtual Entrenamiento Entrenamiento { get; set; }
-        public virtual User User { get; set; }
     }
 }

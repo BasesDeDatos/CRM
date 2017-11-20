@@ -20,7 +20,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nombre" Type="varchar" MaxLength="50" />
           <Property Name="descripcion" Type="varchar(max)" />
         </EntityType>
@@ -28,9 +28,10 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="usuario" Type="int" Nullable="false" />
           <Property Name="entrenamiento" Type="int" Nullable="false" />
+          <Property Name="estado" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Productos">
           <Key>
@@ -104,30 +105,28 @@
         </EntityType>
         <Association Name="FK_Entrenamientos_x_Usuarios_Entrenamientos">
           <End Role="Entrenamientos" Type="Self.Entrenamientos" Multiplicity="1" />
-          <End Role="Entrenamientos_x_Usuarios" Type="Self.Entrenamientos_x_Usuarios" Multiplicity="0..1" />
+          <End Role="Entrenamientos_x_Usuarios" Type="Self.Entrenamientos_x_Usuarios" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Entrenamientos">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="Entrenamientos_x_Usuarios">
-              <PropertyRef Name="id" />
+              <PropertyRef Name="entrenamiento" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <!--Errores durante la generación:
-advertencia 6037: La restricción de clave externa 'FK_Entrenamientos_x_Usuarios_Users' se ha omitido en el modelo de almacenamiento. La columna 'id' de la tabla 'CRMModel2.Store.Entrenamientos_x_Usuarios' es una clave externa que participa en varias relaciones. No se validará un modelo de entidad de uno a uno, ya que puede existir incoherencia en los datos.
         <Association Name="FK_Entrenamientos_x_Usuarios_Users">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="Entrenamientos_x_Usuarios" Type="Self.Entrenamientos_x_Usuarios" Multiplicity="0..1" />
+          <End Role="Entrenamientos_x_Usuarios" Type="Self.Entrenamientos_x_Usuarios" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Entrenamientos_x_Usuarios">
-              <PropertyRef Name="id" />
+              <PropertyRef Name="usuario" />
             </Dependent>
           </ReferentialConstraint>
-        </Association>-->
+        </Association>
         <Association Name="fk_productos">
           <End Role="Productos" Type="Self.Productos" Multiplicity="0..1" />
           <End Role="Ventas_x_Productos" Type="Self.Ventas_x_Productos" Multiplicity="*" />
@@ -176,6 +175,9 @@ advertencia 6037: La restricción de clave externa 'FK_Entrenamientos_x_Usuarios
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="getEntrenamientos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Username" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="getPropuestas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="getTotalVenta" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
           <Parameter Name="p_idVenta" Type="int" Mode="In" />
@@ -197,6 +199,10 @@ advertencia 6037: La restricción de clave externa 'FK_Entrenamientos_x_Usuarios
           <EntitySet Name="Ventas_x_Productos" EntityType="Self.Ventas_x_Productos" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Entrenamientos_x_Usuarios_Entrenamientos" Association="Self.FK_Entrenamientos_x_Usuarios_Entrenamientos">
             <End Role="Entrenamientos" EntitySet="Entrenamientos" />
+            <End Role="Entrenamientos_x_Usuarios" EntitySet="Entrenamientos_x_Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Entrenamientos_x_Usuarios_Users" Association="Self.FK_Entrenamientos_x_Usuarios_Users">
+            <End Role="Users" EntitySet="Users" />
             <End Role="Entrenamientos_x_Usuarios" EntitySet="Entrenamientos_x_Usuarios" />
           </AssociationSet>
           <AssociationSet Name="fk_productos" Association="Self.fk_productos">
@@ -258,6 +264,17 @@ advertencia 6037: La restricción de clave externa 'FK_Entrenamientos_x_Usuarios
           <FunctionImport Name="getVendedores" ReturnType="Collection(CRMModel2.getVendedores_Result)">
           <Parameter Name="Email" Mode="In" Type="String" />
           </FunctionImport>
+          <AssociationSet Name="FK_Entrenamientos_x_Usuarios_Entrenamientos1" Association="CRMModel2.FK_Entrenamientos_x_Usuarios_Entrenamientos1">
+            <End Role="Entrenamiento" EntitySet="Entrenamientos" />
+            <End Role="Entrenamientos_x_Usuarios" EntitySet="Entrenamientos_x_Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Entrenamientos_x_Usuarios_Users" Association="CRMModel2.FK_Entrenamientos_x_Usuarios_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Entrenamientos_x_Usuarios" EntitySet="Entrenamientos_x_Usuarios" />
+          </AssociationSet>
+          <FunctionImport Name="getEntrenamientos" ReturnType="Collection(CRMModel2.getEntrenamientos_Result)">
+            <Parameter Name="Username" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="getVentas_Result">
           <Property Type="DateTime" Name="fecha" Nullable="true" />
@@ -300,6 +317,7 @@ advertencia 6037: La restricción de clave externa 'FK_Entrenamientos_x_Usuarios
           <Property Name="pass" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="cliente" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Entrenamientos_x_Usuarios" Relationship="CRMModel2.FK_Entrenamientos_x_Usuarios_Users" FromRole="User" ToRole="Entrenamientos_x_Usuarios" />
         </EntityType>
         <EntityType Name="Vendedore">
           <Key>
@@ -419,6 +437,7 @@ advertencia 6037: La restricción de clave externa 'FK_Entrenamientos_x_Usuarios
           <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Entrenamientos_x_Usuarios" Relationship="CRMModel2.FK_Entrenamientos_x_Usuarios_Entrenamientos" FromRole="Entrenamiento" ToRole="Entrenamientos_x_Usuarios" />
+          <NavigationProperty Name="Entrenamientos_x_Usuarios1" Relationship="CRMModel2.FK_Entrenamientos_x_Usuarios_Entrenamientos1" FromRole="Entrenamiento" ToRole="Entrenamientos_x_Usuarios" />
         </EntityType>
         <EntityType Name="Entrenamientos_x_Usuarios">
           <Key>
@@ -428,6 +447,9 @@ advertencia 6037: La restricción de clave externa 'FK_Entrenamientos_x_Usuarios
           <Property Name="usuario" Type="Int32" Nullable="false" />
           <Property Name="entrenamiento" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Entrenamiento1" Relationship="CRMModel2.FK_Entrenamientos_x_Usuarios_Entrenamientos" FromRole="Entrenamientos_x_Usuarios" ToRole="Entrenamiento" />
+          <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Entrenamiento" Relationship="CRMModel2.FK_Entrenamientos_x_Usuarios_Entrenamientos1" FromRole="Entrenamientos_x_Usuarios" ToRole="Entrenamiento" />
+          <NavigationProperty Name="User" Relationship="CRMModel2.FK_Entrenamientos_x_Usuarios_Users" FromRole="Entrenamientos_x_Usuarios" ToRole="User" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -455,6 +477,19 @@ advertencia 6037: La restricción de clave externa 'FK_Entrenamientos_x_Usuarios
           <Property Type="String" Name="nombre" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="telefono" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="correo" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <Association Name="FK_Entrenamientos_x_Usuarios_Entrenamientos1">
+          <End Type="CRMModel2.Entrenamiento" Role="Entrenamiento" Multiplicity="1" />
+          <End Type="CRMModel2.Entrenamientos_x_Usuarios" Role="Entrenamientos_x_Usuarios" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Entrenamientos_x_Usuarios_Users">
+          <End Type="CRMModel2.User" Role="User" Multiplicity="1" />
+          <End Type="CRMModel2.Entrenamientos_x_Usuarios" Role="Entrenamientos_x_Usuarios" Multiplicity="*" />
+        </Association>
+        <ComplexType Name="getEntrenamientos_Result">
+          <Property Type="String" Name="nombre" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="descripcion" Nullable="true" />
+          <Property Type="String" Name="estado" Nullable="true" MaxLength="50" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -585,6 +620,7 @@ advertencia 6037: La restricción de clave externa 'FK_Entrenamientos_x_Usuarios
           <EntitySetMapping Name="Entrenamientos_x_Usuarios">
             <EntityTypeMapping TypeName="CRMModel2.Entrenamientos_x_Usuarios">
               <MappingFragment StoreEntitySet="Entrenamientos_x_Usuarios">
+                <ScalarProperty Name="estado" ColumnName="estado" />
                 <ScalarProperty Name="entrenamiento" ColumnName="entrenamiento" />
                 <ScalarProperty Name="usuario" ColumnName="usuario" />
                 <ScalarProperty Name="id" ColumnName="id" />
@@ -608,6 +644,31 @@ advertencia 6037: La restricción de clave externa 'FK_Entrenamientos_x_Usuarios
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
                 <ScalarProperty Name="telefono" ColumnName="telefono" />
                 <ScalarProperty Name="correo" ColumnName="correo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <AssociationSetMapping Name="FK_Entrenamientos_x_Usuarios_Entrenamientos1" TypeName="CRMModel2.FK_Entrenamientos_x_Usuarios_Entrenamientos1" StoreEntitySet="Entrenamientos_x_Usuarios">
+            <EndProperty Name="Entrenamientos_x_Usuarios">
+              <ScalarProperty Name="id" ColumnName="id" />
+            </EndProperty>
+            <EndProperty Name="Entrenamiento">
+              <ScalarProperty Name="id" ColumnName="entrenamiento" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Entrenamientos_x_Usuarios_Users" TypeName="CRMModel2.FK_Entrenamientos_x_Usuarios_Users" StoreEntitySet="Entrenamientos_x_Usuarios">
+            <EndProperty Name="Entrenamientos_x_Usuarios">
+              <ScalarProperty Name="id" ColumnName="id" />
+            </EndProperty>
+            <EndProperty Name="User">
+              <ScalarProperty Name="ID" ColumnName="usuario" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="getEntrenamientos" FunctionName="CRMModel2.Store.getEntrenamientos">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CRMModel2.getEntrenamientos_Result">
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

@@ -66,5 +66,14 @@ namespace CRM.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getVendedores_Result>("getVendedores", emailParameter);
         }
+    
+        public virtual ObjectResult<getEntrenamientos_Result> getEntrenamientos(string username)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getEntrenamientos_Result>("getEntrenamientos", usernameParameter);
+        }
     }
 }

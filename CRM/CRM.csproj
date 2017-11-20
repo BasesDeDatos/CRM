@@ -213,6 +213,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MisPropuestasController.cs" />
+    <Compile Include="Controllers\PuntosDeContactoController.cs" />
     <Compile Include="Controllers\ReporteErroresController.cs" />
     <Compile Include="Controllers\SeguimientoVentasController.cs" />
     <Compile Include="Global.asax.cs">
@@ -241,6 +242,9 @@
       <DependentUpon>VentasModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entrenamientos_x_Usuarios.cs">
+      <DependentUpon>VentasModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\getEntrenamientos_Result.cs">
       <DependentUpon>VentasModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\getPropuestas1_Result.cs">
@@ -461,6 +465,7 @@
     <Content Include="Views\MisPropuestas\Index.cshtml" />
     <Content Include="Views\ReporteErrores\Index.cshtml" />
     <Content Include="Views\Entrenamientos\Index.cshtml" />
+    <Content Include="Views\PuntosDeContacto\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

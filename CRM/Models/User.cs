@@ -16,10 +16,19 @@ namespace CRM.Models
     {
         public string errorMessage;
         public string repeatPass;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public User()
+        {
+            this.Entrenamientos_x_Usuarios = new HashSet<Entrenamientos_x_Usuarios>();
+        }
+    
         public int ID { get; set; }
         public string username { get; set; }
         public string pass { get; set; }
         public string email { get; set; }
         public bool cliente { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Entrenamientos_x_Usuarios> Entrenamientos_x_Usuarios { get; set; }
     }
 }

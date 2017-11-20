@@ -24,9 +24,9 @@ namespace CRM.Controllers
         // GET: Entrenamientos
         public ActionResult Index()
         {
-            var contactos = new CRMEntities3();
-            string email = Session["usermail"].ToString();
-            ViewBag.contactosList = contactos.getVendedores(email).GroupBy(x => x.correo).Select(g => g.First()).ToList();
+            var entrenamientos = new CRMEntities3();
+            string username = Session["username"].ToString();
+            ViewBag.entrenamientosList = entrenamientos.getEntrenamientos(username).OrderBy(o => o.estado).ToList();
             return View();
         }
     }
