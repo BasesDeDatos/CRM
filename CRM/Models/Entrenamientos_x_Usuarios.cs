@@ -15,11 +15,8 @@ namespace CRM.Models
     public partial class Entrenamientos_x_Usuarios
     {
         public int id { get; set; }
-        public int usuario { get; set; }
-        public int entrenamiento { get; set; }
         public string estado { get; set; }
     
-        public virtual Entrenamiento Entrenamiento1 { get; set; }
         public virtual Entrenamiento Entrenamiento { get; set; }
         public virtual User User { get; set; }
     }

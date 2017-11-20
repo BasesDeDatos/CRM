@@ -33,10 +33,10 @@ namespace CRM.Models
         public virtual DbSet<Vendedore> Vendedores { get; set; }
         public virtual DbSet<Venta> Ventas { get; set; }
         public virtual DbSet<Ventas_x_Productos> Ventas_x_Productos { get; set; }
-        public virtual DbSet<Reporte> Reportes { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Entrenamiento> Entrenamientos { get; set; }
         public virtual DbSet<Entrenamientos_x_Usuarios> Entrenamientos_x_Usuarios { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<Reporte> Reportes { get; set; }
     
         public virtual ObjectResult<getVentas_Result> getVentas()
         {
