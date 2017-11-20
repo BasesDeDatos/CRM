@@ -256,6 +256,9 @@
     <Compile Include="Models\getPropuestas_Result.cs">
       <DependentUpon>VentasModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\getReportes_Result.cs">
+      <DependentUpon>VentasModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\getVendedores_Result.cs">
       <DependentUpon>VentasModel.tt</DependentUpon>
     </Compile>

@@ -22,6 +22,7 @@
         <AssociationConnector Association="CRMModel2.FK_Entrenamientos_x_Usuarios_Entrenamientos" />
         <AssociationConnector Association="CRMModel2.FK_Entrenamientos_x_Usuarios_Entrenamientos1" />
         <AssociationConnector Association="CRMModel2.FK_Entrenamientos_x_Usuarios_Users" />
+        <AssociationConnector Association="CRMModel2.FK_Reportes_Users" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

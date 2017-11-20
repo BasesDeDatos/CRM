@@ -10,16 +10,11 @@
 namespace CRM.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Reporte
+    public partial class getReportes_Result
     {
-        public int reporte_id { get; set; }
         public string estado { get; set; }
+        public string producto { get; set; }
         public string descripcion { get; set; }
-        public int usuario_id { get; set; }
-    
-        public virtual Producto Producto { get; set; }
-        public virtual User User { get; set; }
     }
 }

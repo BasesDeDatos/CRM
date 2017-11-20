@@ -42,16 +42,16 @@
           <Property Name="descripcion" Type="varchar" MaxLength="500" />
           <Property Name="imagen" Type="varchar" MaxLength="500" />
           <Property Name="precio" Type="varchar" MaxLength="25" />
-          <Property Name="categoria" Type="varbinary" MaxLength="50" />
         </EntityType>
         <EntityType Name="Reportes">
           <Key>
             <PropertyRef Name="reporte_id" />
           </Key>
-          <Property Name="reporte_id" Type="int" Nullable="false" />
+          <Property Name="reporte_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="estado" Type="varchar" MaxLength="50" />
-          <Property Name="producto" Type="int" />
+          <Property Name="producto" Type="int" Nullable="false" />
           <Property Name="descripcion" Type="varchar(max)" />
+          <Property Name="usuario_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -140,7 +140,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Reportes_Productos">
-          <End Role="Productos" Type="Self.Productos" Multiplicity="0..1" />
+          <End Role="Productos" Type="Self.Productos" Multiplicity="1" />
           <End Role="Reportes" Type="Self.Reportes" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Productos">
@@ -148,6 +148,18 @@
             </Principal>
             <Dependent Role="Reportes">
               <PropertyRef Name="producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reportes_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Reportes" Type="Self.Reportes" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Reportes">
+              <PropertyRef Name="reporte_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -179,6 +191,9 @@
           <Parameter Name="Username" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="getPropuestas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="getReportes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Username" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="getTotalVenta" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
           <Parameter Name="p_idVenta" Type="int" Mode="In" />
         </Function>
@@ -211,6 +226,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_Reportes_Productos" Association="Self.FK_Reportes_Productos">
             <End Role="Productos" EntitySet="Productos" />
+            <End Role="Reportes" EntitySet="Reportes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reportes_Users" Association="Self.FK_Reportes_Users">
+            <End Role="Users" EntitySet="Users" />
             <End Role="Reportes" EntitySet="Reportes" />
           </AssociationSet>
           <AssociationSet Name="fk_vendedor_id" Association="Self.fk_vendedor_id">
@@ -273,7 +292,14 @@
             <End Role="Entrenamientos_x_Usuarios" EntitySet="Entrenamientos_x_Usuarios" />
           </AssociationSet>
           <FunctionImport Name="getEntrenamientos" ReturnType="Collection(CRMModel2.getEntrenamientos_Result)">
-            <Parameter Name="Username" Mode="In" Type="String" />
+          <Parameter Name="Username" Mode="In" Type="String" />
+          </FunctionImport>
+          <AssociationSet Name="FK_Reportes_Users" Association="CRMModel2.FK_Reportes_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Reporte" EntitySet="Reportes" />
+          </AssociationSet>
+          <FunctionImport Name="getReportes" ReturnType="Collection(CRMModel2.getReportes_Result)">
+          <Parameter Name="Username" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="getVentas_Result">
@@ -306,7 +332,6 @@
           <Property Name="precio" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Ventas_x_Productos" Relationship="CRMModel2.fk_productos" FromRole="Producto" ToRole="Ventas_x_Productos" />
           <NavigationProperty Name="Reportes" Relationship="CRMModel2.FK_Reportes_Productos" FromRole="Producto" ToRole="Reporte" />
-          <Property Name="categoria" Type="Binary" MaxLength="50" FixedLength="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -318,6 +343,7 @@
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="cliente" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Entrenamientos_x_Usuarios" Relationship="CRMModel2.FK_Entrenamientos_x_Usuarios_Users" FromRole="User" ToRole="Entrenamientos_x_Usuarios" />
+          <NavigationProperty Name="Reporte" Relationship="CRMModel2.FK_Reportes_Users" FromRole="User" ToRole="Reporte" />
         </EntityType>
         <EntityType Name="Vendedore">
           <Key>
@@ -424,6 +450,8 @@
           <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Producto" Relationship="CRMModel2.FK_Reportes_Productos" FromRole="Reporte" ToRole="Producto" />
+          <Property Name="usuario_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="CRMModel2.FK_Reportes_Users" FromRole="Reporte" ToRole="User" />
         </EntityType>
         <Association Name="FK_Reportes_Productos">
           <End Type="CRMModel2.Producto" Role="Producto" Multiplicity="0..1" />
@@ -491,6 +519,23 @@
           <Property Type="String" Name="descripcion" Nullable="true" />
           <Property Type="String" Name="estado" Nullable="true" MaxLength="50" />
         </ComplexType>
+        <Association Name="FK_Reportes_Users">
+          <End Type="CRMModel2.User" Role="User" Multiplicity="1" />
+          <End Type="CRMModel2.Reporte" Role="Reporte" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Reporte">
+              <PropertyRef Name="reporte_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="getReportes_Result">
+          <Property Type="String" Name="estado" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="producto" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="descripcion" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -524,7 +569,6 @@
           <EntitySetMapping Name="Productos">
             <EntityTypeMapping TypeName="CRMModel2.Producto">
               <MappingFragment StoreEntitySet="Productos">
-                <ScalarProperty Name="categoria" ColumnName="categoria" />
                 <ScalarProperty Name="precio" ColumnName="precio" />
                 <ScalarProperty Name="imagen" ColumnName="imagen" />
                 <ScalarProperty Name="descripcion" ColumnName="descripcion" />
@@ -593,6 +637,7 @@
           <EntitySetMapping Name="Reportes">
             <EntityTypeMapping TypeName="CRMModel2.Reporte">
               <MappingFragment StoreEntitySet="Reportes">
+                <ScalarProperty Name="usuario_id" ColumnName="usuario_id" />
                 <ScalarProperty Name="descripcion" ColumnName="descripcion" />
                 <ScalarProperty Name="estado" ColumnName="estado" />
                 <ScalarProperty Name="reporte_id" ColumnName="reporte_id" />
@@ -669,6 +714,15 @@
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
                 <ScalarProperty Name="descripcion" ColumnName="descripcion" />
                 <ScalarProperty Name="estado" ColumnName="estado" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="getReportes" FunctionName="CRMModel2.Store.getReportes">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CRMModel2.getReportes_Result">
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="producto" ColumnName="producto" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

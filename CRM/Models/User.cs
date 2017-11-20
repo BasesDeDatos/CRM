@@ -30,5 +30,6 @@ namespace CRM.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Entrenamientos_x_Usuarios> Entrenamientos_x_Usuarios { get; set; }
+        public virtual Reporte Reporte { get; set; }
     }
 }

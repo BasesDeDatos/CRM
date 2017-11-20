@@ -12,10 +12,8 @@ namespace CRM.Controllers
 		// GET: Home
 		public ActionResult Index()
 		{
-			var clientes = new CRMEntities1();
-			ViewBag.clientList = clientes.Clientes.ToList();
-			// ViewBag.username = Session["username"];
-			//Console.Write("Nombre de usuario> " + ViewBag.username);
+			var reportes = new CRMEntities3();
+            ViewBag.reportesList = reportes.getReportes(Session["username"].ToString()).ToList();
 			return View();
 		}
 	}
