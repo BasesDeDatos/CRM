@@ -7,7 +7,9 @@ app.controller('chatController', ['$scope', 'Message', function ($scope, Message
     $scope.messages = Message.all;
 
     $scope.inserisci = function (message) {
-        Message.create(message);
+        Message.create(message).then(function () {
+            $scope.newmessage.text = ""
+        })
     };
 }]);
 
@@ -33,4 +35,18 @@ app.factory('Message', ['$firebaseObject', '$firebaseArray',
 		return Message;
  
 	}
-	]);
+]);
+
+app.directive('ngEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if (event.which === 13) {
+                scope.$apply(function () {
+                    scope.$eval(attrs.ngEnter);
+                });
+
+                event.preventDefault();
+            }
+        });
+    };
+});
