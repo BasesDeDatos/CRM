@@ -17,11 +17,11 @@
         <EntityTypeShape EntityType="CRMModel2.sysdiagram" Width="1.5" PointX="0.75" PointY="8.75" />
         <EntityTypeShape EntityType="CRMModel2.Entrenamiento" Width="1.5" PointX="7.75" PointY="8" />
         <EntityTypeShape EntityType="CRMModel2.Entrenamientos_x_Usuarios" Width="1.5" PointX="10" PointY="1" />
-        <EntityTypeShape EntityType="CRMModel2.Reporte" Width="1.5" PointX="10" PointY="4" />
         <AssociationConnector Association="CRMModel2.FK_Entrenamientos_x_Usuarios_Entrenamientos" />
         <AssociationConnector Association="CRMModel2.FK_Entrenamientos_x_Usuarios_Users" />
-        <AssociationConnector Association="CRMModel2.FK_Reportes_Productos" />
-        <AssociationConnector Association="CRMModel2.FK_Reportes_Users" />
+        <EntityTypeShape EntityType="CRMModel2.Reporte" Width="3.5" PointX="9.625" PointY="5.25" />
+        <AssociationConnector Association="CRMModel2.FK_Reporte_Productos" />
+        <AssociationConnector Association="CRMModel2.FK_Reporte_Users" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

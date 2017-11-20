@@ -17,9 +17,10 @@ namespace CRM.Controllers
             ViewBag.productosList = db.Productos.Select(x => new { x.nombre, x.producto_id }).OrderBy(o => o.nombre).ToList();
             return View();
 		}
-        /*
+        
         public Boolean insertarReporte(String descripcionTextBox, String ddProductos)
         {
+            /*
             var db = new CRMEntities3();
             try
             {
@@ -27,7 +28,7 @@ namespace CRM.Controllers
                 {
                     estado = "Abierto",
                     descripcion = descripcionTextBox,
-                    producto = Int32.Parse(ddProductos),
+                    producto_id = Int32.Parse(ddProductos),
                     usuario_id = db.Users.Where(x => x.username == Session["username"].ToString()).Select(x => new { x.ID }).FirstOrDefault().ID
                 };
                 var insert = db.Reportes.Add(reporte);
@@ -45,11 +46,14 @@ namespace CRM.Controllers
             {
                 return false;
             }
+            */
+            return false;
 
         }
         [HttpPost]
         public ActionResult agregarReporte(string ddProductos, string descripcionTextBox)
         {
+            /*
             var db = new CRMEntities();
             var insertoCorrectamente = insertarReporte(descripcionTextBox, ddProductos);
 
@@ -61,7 +65,9 @@ namespace CRM.Controllers
             {
                 return View("Index", "ReporteErrores");
             }
+            */
+            return View();
         }
-        */
+
     }
 }

@@ -20,6 +20,7 @@ namespace CRM.Models
         public User()
         {
             this.Entrenamientos_x_Usuarios = new HashSet<Entrenamientos_x_Usuarios>();
+            this.Reportes = new HashSet<Reporte>();
         }
     
         public int ID { get; set; }
@@ -30,6 +31,7 @@ namespace CRM.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Entrenamientos_x_Usuarios> Entrenamientos_x_Usuarios { get; set; }
-        public virtual Reporte Reporte { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Reporte> Reportes { get; set; }
     }
 }

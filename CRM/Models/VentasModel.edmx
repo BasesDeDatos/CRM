@@ -47,10 +47,10 @@
           <Key>
             <PropertyRef Name="reporte_id" />
           </Key>
-          <Property Name="reporte_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="estado" Type="varchar" MaxLength="50" />
-          <Property Name="producto" Type="int" Nullable="false" />
+          <Property Name="reporte_id" Type="int" Nullable="false" />
+          <Property Name="estado" Type="varchar(max)" />
           <Property Name="descripcion" Type="varchar(max)" />
+          <Property Name="producto_id" Type="int" Nullable="false" />
           <Property Name="usuario_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="sysdiagrams">
@@ -139,7 +139,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Reportes_Productos">
+        <Association Name="FK_Reporte_Productos">
           <End Role="Productos" Type="Self.Productos" Multiplicity="1" />
           <End Role="Reportes" Type="Self.Reportes" Multiplicity="*" />
           <ReferentialConstraint>
@@ -147,19 +147,19 @@
               <PropertyRef Name="producto_id" />
             </Principal>
             <Dependent Role="Reportes">
-              <PropertyRef Name="producto" />
+              <PropertyRef Name="producto_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Reportes_Users">
+        <Association Name="FK_Reporte_Users">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="Reportes" Type="Self.Reportes" Multiplicity="0..1" />
+          <End Role="Reportes" Type="Self.Reportes" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Reportes">
-              <PropertyRef Name="reporte_id" />
+              <PropertyRef Name="usuario_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -224,11 +224,11 @@
             <End Role="Productos" EntitySet="Productos" />
             <End Role="Ventas_x_Productos" EntitySet="Ventas_x_Productos" />
           </AssociationSet>
-          <AssociationSet Name="FK_Reportes_Productos" Association="Self.FK_Reportes_Productos">
+          <AssociationSet Name="FK_Reporte_Productos" Association="Self.FK_Reporte_Productos">
             <End Role="Productos" EntitySet="Productos" />
             <End Role="Reportes" EntitySet="Reportes" />
           </AssociationSet>
-          <AssociationSet Name="FK_Reportes_Users" Association="Self.FK_Reportes_Users">
+          <AssociationSet Name="FK_Reporte_Users" Association="Self.FK_Reporte_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="Reportes" EntitySet="Reportes" />
           </AssociationSet>
@@ -280,7 +280,6 @@
           </FunctionImport>
           <EntitySet Name="Entrenamientos" EntityType="CRMModel2.Entrenamiento" />
           <EntitySet Name="Entrenamientos_x_Usuarios" EntityType="CRMModel2.Entrenamientos_x_Usuarios" />
-          <EntitySet Name="Reportes" EntityType="CRMModel2.Reporte" />
           <AssociationSet Name="FK_Entrenamientos_x_Usuarios_Entrenamientos" Association="CRMModel2.FK_Entrenamientos_x_Usuarios_Entrenamientos">
             <End Role="Entrenamiento" EntitySet="Entrenamientos" />
             <End Role="Entrenamientos_x_Usuarios" EntitySet="Entrenamientos_x_Usuarios" />
@@ -289,15 +288,16 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Entrenamientos_x_Usuarios" EntitySet="Entrenamientos_x_Usuarios" />
           </AssociationSet>
-          <AssociationSet Name="FK_Reportes_Productos" Association="CRMModel2.FK_Reportes_Productos">
+          <EntitySet Name="Reportes" EntityType="CRMModel2.Reporte" />
+          <AssociationSet Name="FK_Reporte_Productos" Association="CRMModel2.FK_Reporte_Productos">
             <End Role="Producto" EntitySet="Productos" />
             <End Role="Reporte" EntitySet="Reportes" />
           </AssociationSet>
-          <AssociationSet Name="FK_Reportes_Users" Association="CRMModel2.FK_Reportes_Users">
+          <AssociationSet Name="FK_Reporte_Users" Association="CRMModel2.FK_Reporte_Users">
             <End Role="User" EntitySet="Users" />
             <End Role="Reporte" EntitySet="Reportes" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <ComplexType Name="getVentas_Result">
           <Property Type="DateTime" Name="fecha" Nullable="true" />
           <Property Type="Int32" Name="descuento" Nullable="true" />
@@ -327,7 +327,7 @@
           <Property Name="imagen" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="precio" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Ventas_x_Productos" Relationship="CRMModel2.fk_productos" FromRole="Producto" ToRole="Ventas_x_Productos" />
-          <NavigationProperty Name="Reportes" Relationship="CRMModel2.FK_Reportes_Productos" FromRole="Producto" ToRole="Reporte" />
+          <NavigationProperty Name="Reportes" Relationship="CRMModel2.FK_Reporte_Productos" FromRole="Producto" ToRole="Reporte" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -339,7 +339,7 @@
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="cliente" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Entrenamientos_x_Usuarios" Relationship="CRMModel2.FK_Entrenamientos_x_Usuarios_Users" FromRole="User" ToRole="Entrenamientos_x_Usuarios" />
-          <NavigationProperty Name="Reporte" Relationship="CRMModel2.FK_Reportes_Users" FromRole="User" ToRole="Reporte" />
+          <NavigationProperty Name="Reportes" Relationship="CRMModel2.FK_Reporte_Users" FromRole="User" ToRole="Reporte" />
         </EntityType>
         <EntityType Name="Vendedore">
           <Key>
@@ -481,17 +481,6 @@
           <NavigationProperty Name="Entrenamiento" Relationship="CRMModel2.FK_Entrenamientos_x_Usuarios_Entrenamientos" FromRole="Entrenamientos_x_Usuarios" ToRole="Entrenamiento" />
           <NavigationProperty Name="User" Relationship="CRMModel2.FK_Entrenamientos_x_Usuarios_Users" FromRole="Entrenamientos_x_Usuarios" ToRole="User" />
         </EntityType>
-        <EntityType Name="Reporte">
-          <Key>
-            <PropertyRef Name="reporte_id" />
-          </Key>
-          <Property Name="reporte_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="usuario_id" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Producto" Relationship="CRMModel2.FK_Reportes_Productos" FromRole="Reporte" ToRole="Producto" />
-          <NavigationProperty Name="User" Relationship="CRMModel2.FK_Reportes_Users" FromRole="Reporte" ToRole="User" />
-        </EntityType>
         <Association Name="FK_Entrenamientos_x_Usuarios_Entrenamientos">
           <End Type="CRMModel2.Entrenamiento" Role="Entrenamiento" Multiplicity="1" />
           <End Type="CRMModel2.Entrenamientos_x_Usuarios" Role="Entrenamientos_x_Usuarios" Multiplicity="*" />
@@ -500,23 +489,25 @@
           <End Type="CRMModel2.User" Role="User" Multiplicity="1" />
           <End Type="CRMModel2.Entrenamientos_x_Usuarios" Role="Entrenamientos_x_Usuarios" Multiplicity="*" />
         </Association>
-        <Association Name="FK_Reportes_Productos">
+        <EntityType Name="Reporte">
+          <Key>
+            <PropertyRef Name="reporte_id" />
+          </Key>
+          <Property Name="reporte_id" Type="Int32" Nullable="false" />
+          <Property Name="estado" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Producto" Relationship="CRMModel2.FK_Reporte_Productos" FromRole="Reporte" ToRole="Producto" />
+          <NavigationProperty Name="User" Relationship="CRMModel2.FK_Reporte_Users" FromRole="Reporte" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Reporte_Productos">
           <End Type="CRMModel2.Producto" Role="Producto" Multiplicity="1" />
           <End Type="CRMModel2.Reporte" Role="Reporte" Multiplicity="*" />
         </Association>
-        <Association Name="FK_Reportes_Users">
+        <Association Name="FK_Reporte_Users">
           <End Type="CRMModel2.User" Role="User" Multiplicity="1" />
-          <End Type="CRMModel2.Reporte" Role="Reporte" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Reporte">
-              <PropertyRef Name="reporte_id" />
-            </Dependent>
-          </ReferentialConstraint>
+          <End Type="CRMModel2.Reporte" Role="Reporte" Multiplicity="*" />
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -669,16 +660,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Reportes">
-            <EntityTypeMapping TypeName="CRMModel2.Reporte">
-              <MappingFragment StoreEntitySet="Reportes">
-                <ScalarProperty Name="usuario_id" ColumnName="usuario_id" />
-                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
-                <ScalarProperty Name="estado" ColumnName="estado" />
-                <ScalarProperty Name="reporte_id" ColumnName="reporte_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <AssociationSetMapping Name="FK_Entrenamientos_x_Usuarios_Entrenamientos" TypeName="CRMModel2.FK_Entrenamientos_x_Usuarios_Entrenamientos" StoreEntitySet="Entrenamientos_x_Usuarios">
             <EndProperty Name="Entrenamientos_x_Usuarios">
               <ScalarProperty Name="id" ColumnName="id" />
@@ -695,12 +676,29 @@
               <ScalarProperty Name="ID" ColumnName="usuario" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_Reportes_Productos" TypeName="CRMModel2.FK_Reportes_Productos" StoreEntitySet="Reportes">
+          <EntitySetMapping Name="Reportes">
+            <EntityTypeMapping TypeName="CRMModel2.Reporte">
+              <MappingFragment StoreEntitySet="Reportes">
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="reporte_id" ColumnName="reporte_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK_Reporte_Productos" TypeName="CRMModel2.FK_Reporte_Productos" StoreEntitySet="Reportes">
             <EndProperty Name="Reporte">
               <ScalarProperty Name="reporte_id" ColumnName="reporte_id" />
             </EndProperty>
             <EndProperty Name="Producto">
-              <ScalarProperty Name="producto_id" ColumnName="producto" />
+              <ScalarProperty Name="producto_id" ColumnName="producto_id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Reporte_Users" TypeName="CRMModel2.FK_Reporte_Users" StoreEntitySet="Reportes">
+            <EndProperty Name="Reporte">
+              <ScalarProperty Name="reporte_id" ColumnName="reporte_id" />
+            </EndProperty>
+            <EndProperty Name="User">
+              <ScalarProperty Name="ID" ColumnName="usuario_id" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>
