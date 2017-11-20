@@ -209,6 +209,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
+    <Compile Include="Controllers\EntrenamientosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MisPropuestasController.cs" />
@@ -236,6 +237,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ClientesDataModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entrenamiento.cs">
+      <DependentUpon>VentasModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entrenamientos_x_Usuarios.cs">
+      <DependentUpon>VentasModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\getPropuestas1_Result.cs">
       <DependentUpon>VentasModel.tt</DependentUpon>
     </Compile>
@@ -243,6 +250,9 @@
       <DependentUpon>VentasModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\getPropuestas_Result.cs">
+      <DependentUpon>VentasModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\getVendedores_Result.cs">
       <DependentUpon>VentasModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\getVentas_Result.cs">
@@ -284,6 +294,9 @@
       <DependentUpon>VentasModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Reporte.cs">
+      <DependentUpon>VentasModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>VentasModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs">
@@ -447,6 +460,7 @@
     <Content Include="Views\SeguimientoVentas\FormNewSale.cshtml" />
     <Content Include="Views\MisPropuestas\Index.cshtml" />
     <Content Include="Views\ReporteErrores\Index.cshtml" />
+    <Content Include="Views\Entrenamientos\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
