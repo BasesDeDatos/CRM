@@ -407,7 +407,8 @@
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
-                    <div class="chat-panel panel panel-default">
+                    <div class="chat-panel panel panel-default" ng-app="chatApp" ng-controller="chatController" >
+                        {{"AngularJS Loaded"}}
                         <div class="panel-heading">
                             <i class="fa fa-comments fa-fw"></i> Chat
                             <div class="btn-group pull-right">
@@ -511,16 +512,18 @@
                                         </p>
                                     </div>
                                 </li>
+                                <li class="right clearfix" ng-repeat="message in messages">
+                                    {{message.user}}: {{message.text}}
+                                </li>
                             </ul>
                         </div>
                         <!-- /.panel-body -->
                         <div class="panel-footer">
                             <div class="input-group">
-                                <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." />
+                                <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." ng-model="newmessage.text">
+                                <input type="hidden" ng-init="newmessage.user='@Session["username"]'">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-warning btn-sm" id="btn-chat">
-                                        Send
-                                    </button>
+                                    <button class="btn btn-warning btn-sm" id="btn-chat" ng-click="inserisci(newmessage)">Send</button>
                                 </span>
                             </div>
                         </div>
@@ -548,6 +551,31 @@
     <script src="~/Scripts/morris-data.js"></script>
     <!-- Custom Theme JavaScript -->
     <script src="~/Scripts/sb-admin-2.js"></script>
+
+    <!--Angulare -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+    
+    <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
+    <!-- AngularFire -->
+    <script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
+
+
+    <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyCZJWHZj094xVNKfMmekpyoOXO2pla1wes",
+            authDomain: "chatcrm-b01ba.firebaseapp.com",
+            databaseURL: "https://chatcrm-b01ba.firebaseio.com",
+            projectId: "chatcrm-b01ba",
+            storageBucket: "chatcrm-b01ba.appspot.com",
+            messagingSenderId: "121993709202"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+    <script src="~/Scripts/chat.app.js"></script> 
+
 
 </body>
 
