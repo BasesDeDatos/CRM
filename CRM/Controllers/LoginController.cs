@@ -53,8 +53,11 @@ namespace CRM.Controllers
             else {
                 if (usuarioEsValido(userModel)) {
                     string username = userModel.username;
+                    string usermail = db.Users.Where(x => x.username == username).Select(x => new { x.email }).FirstOrDefault().email;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\n\n" + usermail + "\n\n\n\n\n");
                     bool userType = db.Users.Where(x => x.username == username).Select(x => new { x.cliente }).FirstOrDefault().cliente;
                     Session["username"] = username;
+                    Session["usermail"] = usermail;
                     Session["userType"] = userType;
                     ViewBag.username = Session["username"];
                     ViewBag.userType = Session["userType"];

@@ -34,6 +34,9 @@ namespace CRM.Models
         public virtual DbSet<Venta> Ventas { get; set; }
         public virtual DbSet<Ventas_x_Productos> Ventas_x_Productos { get; set; }
         public virtual DbSet<Reporte> Reportes { get; set; }
+        public virtual DbSet<Entrenamiento> Entrenamientos { get; set; }
+        public virtual DbSet<Entrenamientos_x_Usuarios> Entrenamientos_x_Usuarios { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
     
         public virtual ObjectResult<getVentas_Result> getVentas()
         {
@@ -53,6 +56,15 @@ namespace CRM.Models
         public virtual ObjectResult<getPropuestas2_Result> getPropuestas2()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getPropuestas2_Result>("getPropuestas2");
+        }
+    
+        public virtual ObjectResult<getVendedores_Result> getVendedores(string email)
+        {
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getVendedores_Result>("getVendedores", emailParameter);
         }
     }
 }

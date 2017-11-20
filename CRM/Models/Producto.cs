@@ -26,6 +26,7 @@ namespace CRM.Models
         public string descripcion { get; set; }
         public string imagen { get; set; }
         public string precio { get; set; }
+        public byte[] categoria { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Ventas_x_Productos> Ventas_x_Productos { get; set; }

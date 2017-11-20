@@ -16,6 +16,22 @@
           <Property Name="telefono" Type="varchar" MaxLength="100" />
           <Property Name="tipoCliente" Type="varchar" MaxLength="100" />
         </EntityType>
+        <EntityType Name="Entrenamientos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="descripcion" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="Entrenamientos_x_Usuarios">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="usuario" Type="int" Nullable="false" />
+          <Property Name="entrenamiento" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Productos">
           <Key>
             <PropertyRef Name="producto_id" />
@@ -25,6 +41,7 @@
           <Property Name="descripcion" Type="varchar" MaxLength="500" />
           <Property Name="imagen" Type="varchar" MaxLength="500" />
           <Property Name="precio" Type="varchar" MaxLength="25" />
+          <Property Name="categoria" Type="varbinary" MaxLength="50" />
         </EntityType>
         <EntityType Name="Reportes">
           <Key>
@@ -34,6 +51,16 @@
           <Property Name="estado" Type="varchar" MaxLength="50" />
           <Property Name="producto" Type="int" />
           <Property Name="descripcion" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -75,6 +102,32 @@
           <Property Name="f_producto_id" Type="int" />
           <Property Name="cantidad" Type="int" />
         </EntityType>
+        <Association Name="FK_Entrenamientos_x_Usuarios_Entrenamientos">
+          <End Role="Entrenamientos" Type="Self.Entrenamientos" Multiplicity="1" />
+          <End Role="Entrenamientos_x_Usuarios" Type="Self.Entrenamientos_x_Usuarios" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Entrenamientos">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Entrenamientos_x_Usuarios">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <!--Errores durante la generación:
+advertencia 6037: La restricción de clave externa 'FK_Entrenamientos_x_Usuarios_Users' se ha omitido en el modelo de almacenamiento. La columna 'id' de la tabla 'CRMModel2.Store.Entrenamientos_x_Usuarios' es una clave externa que participa en varias relaciones. No se validará un modelo de entidad de uno a uno, ya que puede existir incoherencia en los datos.
+        <Association Name="FK_Entrenamientos_x_Usuarios_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Entrenamientos_x_Usuarios" Type="Self.Entrenamientos_x_Usuarios" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Entrenamientos_x_Usuarios">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>-->
         <Association Name="fk_productos">
           <End Role="Productos" Type="Self.Productos" Multiplicity="0..1" />
           <End Role="Ventas_x_Productos" Type="Self.Ventas_x_Productos" Multiplicity="*" />
@@ -127,15 +180,25 @@
         <Function Name="getTotalVenta" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
           <Parameter Name="p_idVenta" Type="int" Mode="In" />
         </Function>
+        <Function Name="getVendedores" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Email" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="getVentas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="CRMModel2StoreContainer">
           <EntitySet Name="Clientes" EntityType="Self.Clientes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Entrenamientos" EntityType="Self.Entrenamientos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Entrenamientos_x_Usuarios" EntityType="Self.Entrenamientos_x_Usuarios" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Productos" EntityType="Self.Productos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reportes" EntityType="Self.Reportes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Vendedores" EntityType="Self.Vendedores" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ventas" EntityType="Self.Ventas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ventas_x_Productos" EntityType="Self.Ventas_x_Productos" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Entrenamientos_x_Usuarios_Entrenamientos" Association="Self.FK_Entrenamientos_x_Usuarios_Entrenamientos">
+            <End Role="Entrenamientos" EntitySet="Entrenamientos" />
+            <End Role="Entrenamientos_x_Usuarios" EntitySet="Entrenamientos_x_Usuarios" />
+          </AssociationSet>
           <AssociationSet Name="fk_productos" Association="Self.fk_productos">
             <End Role="Productos" EntitySet="Productos" />
             <End Role="Ventas_x_Productos" EntitySet="Ventas_x_Productos" />
@@ -185,6 +248,16 @@
             <End Role="Producto" EntitySet="Productos" />
             <End Role="Reporte" EntitySet="Reportes" />
           </AssociationSet>
+          <EntitySet Name="Entrenamientos" EntityType="CRMModel2.Entrenamiento" />
+          <EntitySet Name="Entrenamientos_x_Usuarios" EntityType="CRMModel2.Entrenamientos_x_Usuarios" />
+          <EntitySet Name="sysdiagrams" EntityType="CRMModel2.sysdiagram" />
+          <AssociationSet Name="FK_Entrenamientos_x_Usuarios_Entrenamientos" Association="CRMModel2.FK_Entrenamientos_x_Usuarios_Entrenamientos">
+            <End Role="Entrenamiento" EntitySet="Entrenamientos" />
+            <End Role="Entrenamientos_x_Usuarios" EntitySet="Entrenamientos_x_Usuarios" />
+          </AssociationSet>
+          <FunctionImport Name="getVendedores" ReturnType="Collection(CRMModel2.getVendedores_Result)">
+          <Parameter Name="Email" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="getVentas_Result">
           <Property Type="DateTime" Name="fecha" Nullable="true" />
@@ -216,6 +289,7 @@
           <Property Name="precio" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Ventas_x_Productos" Relationship="CRMModel2.fk_productos" FromRole="Producto" ToRole="Ventas_x_Productos" />
           <NavigationProperty Name="Reportes" Relationship="CRMModel2.FK_Reportes_Productos" FromRole="Producto" ToRole="Reporte" />
+          <Property Name="categoria" Type="Binary" MaxLength="50" FixedLength="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -337,6 +411,51 @@
           <End Type="CRMModel2.Producto" Role="Producto" Multiplicity="0..1" />
           <End Type="CRMModel2.Reporte" Role="Reporte" Multiplicity="*" />
         </Association>
+        <EntityType Name="Entrenamiento">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Entrenamientos_x_Usuarios" Relationship="CRMModel2.FK_Entrenamientos_x_Usuarios_Entrenamientos" FromRole="Entrenamiento" ToRole="Entrenamientos_x_Usuarios" />
+        </EntityType>
+        <EntityType Name="Entrenamientos_x_Usuarios">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="usuario" Type="Int32" Nullable="false" />
+          <Property Name="entrenamiento" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Entrenamiento1" Relationship="CRMModel2.FK_Entrenamientos_x_Usuarios_Entrenamientos" FromRole="Entrenamientos_x_Usuarios" ToRole="Entrenamiento" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_Entrenamientos_x_Usuarios_Entrenamientos">
+          <End Type="CRMModel2.Entrenamiento" Role="Entrenamiento" Multiplicity="1" />
+          <End Type="CRMModel2.Entrenamientos_x_Usuarios" Role="Entrenamientos_x_Usuarios" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Entrenamiento">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Entrenamientos_x_Usuarios">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="getVendedores_Result">
+          <Property Type="String" Name="nombre" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="telefono" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="correo" Nullable="true" MaxLength="100" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -370,6 +489,7 @@
           <EntitySetMapping Name="Productos">
             <EntityTypeMapping TypeName="CRMModel2.Producto">
               <MappingFragment StoreEntitySet="Productos">
+                <ScalarProperty Name="categoria" ColumnName="categoria" />
                 <ScalarProperty Name="precio" ColumnName="precio" />
                 <ScalarProperty Name="imagen" ColumnName="imagen" />
                 <ScalarProperty Name="descripcion" ColumnName="descripcion" />
@@ -453,6 +573,44 @@
             </EndProperty>
             <Condition ColumnName="producto" IsNull="false" />
           </AssociationSetMapping>
+          <EntitySetMapping Name="Entrenamientos">
+            <EntityTypeMapping TypeName="CRMModel2.Entrenamiento">
+              <MappingFragment StoreEntitySet="Entrenamientos">
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Entrenamientos_x_Usuarios">
+            <EntityTypeMapping TypeName="CRMModel2.Entrenamientos_x_Usuarios">
+              <MappingFragment StoreEntitySet="Entrenamientos_x_Usuarios">
+                <ScalarProperty Name="entrenamiento" ColumnName="entrenamiento" />
+                <ScalarProperty Name="usuario" ColumnName="usuario" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="CRMModel2.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="getVendedores" FunctionName="CRMModel2.Store.getVendedores">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CRMModel2.getVendedores_Result">
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="correo" ColumnName="correo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
