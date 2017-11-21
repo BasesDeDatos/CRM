@@ -1,6 +1,8 @@
 ﻿using CRM.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -9,15 +11,35 @@ namespace CRM.Controllers
 {
 	public class ReporteErroresController : Controller
 	{
-		// GET: Home
-		public ActionResult Index()
+        private ICRMEntities3 db;
+        public ReporteErroresController(ICRMEntities3 p_db)
+        {
+            db = p_db;
+        }
+        public ReporteErroresController()
+        {
+            db = new CRMEntities3();
+        }
+        // GET: Home
+        public ActionResult Index()
 		{
-			var db = new CRMEntities3();
-            ViewBag.reportesList = db.getReportes(Session["username"].ToString()).ToList();
-            ViewBag.productosList = db.Productos.Select(x => new { x.nombre, x.producto_id }).OrderBy(o => o.nombre).ToList();
+            CRMEntities3 reportes = (CRMEntities3)db;
+            string username = Session["username"].ToString();
+            ViewBag.reportesList = getReportes(username);
+            ViewBag.productosList = getProductos();
             return View();
 		}
-        
+
+        public List<getReportes_Result> getReportes(string pUsername)
+        {
+            return db.getReportes(pUsername).ToList();
+        }
+
+        public List<Producto> getProductos()
+        {
+            return db.Productos.OrderBy(o => o.nombre).ToList();
+        }
+
         public Boolean insertarReporte(String descripcionTextBox, String ddProductos)
         {
             /*

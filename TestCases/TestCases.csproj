@@ -61,8 +61,11 @@
   <ItemGroup>
     <Compile Include="IVentaDB.cs" />
     <Compile Include="Test_Cliente_Controller.cs" />
+    <Compile Include="Test_Entrenamientos_Controller.cs" />
     <Compile Include="Test_Login_Controller.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test_PuntosDeContacto_Controller.cs" />
+    <Compile Include="Test_ReporteErrores_Controller.cs" />
     <Compile Include="Test_Seguimiento_Ventas_Controller.cs" />
   </ItemGroup>
   <ItemGroup>

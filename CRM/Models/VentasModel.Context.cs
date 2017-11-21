@@ -14,8 +14,17 @@ namespace CRM.Models
     using System.Data.Entity.Infrastructure;
     using System.Data.Entity.Core.Objects;
     using System.Linq;
-    
-    public partial class CRMEntities3 : DbContext
+
+    public interface ICRMEntities3
+    {
+        DbSet<Producto> Productos { get; set; }
+        ObjectResult<getEntrenamientos_Result> getEntrenamientos(string pUsuario);
+        ObjectResult<getReportes_Result> getReportes(string pUsuario);
+        ObjectResult<getVendedores_Result> getVendedores(string pEmail);
+    }
+
+
+    public partial class CRMEntities3 : DbContext, ICRMEntities3
     {
         public CRMEntities3()
             : base("name=CRMEntities3")
