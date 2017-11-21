@@ -11,14 +11,22 @@ app.controller('chatController', ['$scope', 'Message', function ($scope, Message
 			Message.create(message);
 			$scope.newmessage.text = "";
 		}
-	};
+    };
+
+    var ref = firebase.database().ref();
+    ref.child('messages').orderByChild('user').on('child_added', function (ref) {
+        if (ref.val().user != $scope.newmessage.user) {
+            var audio = new Audio('https://notificationsounds.com/soundfiles/a5bfc9e07964f8dddeb95fc584cd965d/file-sounds-741-thrown.mp3');
+            audio.play();
+        }
+    });
 }]);
 
 
 app.factory('Message', ['$firebaseObject', '$firebaseArray',
-	function ($firebaseObject, $firebaseArray) {
-		var ref = firebase.database().ref();
-		var messages = $firebaseArray(ref.child('messages'));
+    function ($firebaseObject, $firebaseArray) {
+        var ref = firebase.database().ref();
+        var messages = $firebaseArray(ref.child('messages'));
 
 		var Message = {
 			all: messages,
@@ -51,3 +59,18 @@ app.directive('ngEnter', function () {
 		});
 	};
 });
+
+app.directive('scrollBottom', function () {
+    return {
+        scope: {
+            scrollBottom: "="
+        },
+        link: function (scope, element) {
+            scope.$watchCollection('scrollBottom', function (newValue) {
+                if (newValue) {
+                    $(element).scrollTop($(element)[0].scrollHeight);
+                }
+            });
+        }
+    }
+})

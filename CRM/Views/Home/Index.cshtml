@@ -209,10 +209,12 @@
                             </div>
                         </div>
                         <!-- /.panel-heading -->
-                        <div class="panel-body">
+                        <div class="panel-body" scroll-bottom="messages">
                             <ul class="chat">
-                                <li class="clearfix" ng-class="message.user == '@Session["username"]' ? 'right' : 'left'" ng-repeat="message in messages">
-
+                                <li class="clearfix" 
+                                    ng-class="message.user == '@Session["username"]' ? 'right' : 'left'" 
+                                    ng-repeat="message in messages"
+                                    >
                                     <span class="chat-img" ng-class="message.user == '@Session["username"]' ? 'pull-right' : 'pull-left'">
                                         <img src="http://placehold.it/50/FA6F57/fff" alt="User Avatar" class="img-circle" />
                                     </span>
